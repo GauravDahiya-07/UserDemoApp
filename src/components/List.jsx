@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Search from './Search'
+import { MyContext } from "../MyContext";
 
 const List = () => {
     const [users, setUsers] = useState([]);
+    const { searchText, setSearchText } = useContext(MyContext);
 
     const fetchUsers = async () => {
         try {
