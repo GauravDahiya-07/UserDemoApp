@@ -1,0 +1,53 @@
+import React, { useState, useEffect, useContext } from 'react'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
+import Search from './Search'
+import { MyContext } from "../MyContext";
+
+const List = () => {
+    const [users, setUsers] = useState([]);
+    const { searchText, setSearchText } = useContext(MyContext);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get('https://jsonplaceholder.typicode.com/users');
+            setUsers(response.data);
+        } catch (error) {
+            console.log('Error fetching users:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    return (
+        <>
+
+            <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100'>
+                <div>
+                    <Search />
+                </div>
+
+                <h1 className='text-4xl font-bold mb-6 text-red-500 p-4'>User List</h1>
+                <ul>
+                    {users.map((user) => (
+                        <li key={user.id} className='text-lg font-medium mb-2' >
+                            <Link key={user.id}
+                                to={`/user/${user.id}`}
+                                className='text-blue-500 hover:underline'
+                            >
+
+                                {user.name} - {user.username}
+
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+
+            </div>
+        </>
+    )
+}
+
+export default List
